@@ -130,7 +130,7 @@ struct ParserPrivate
 	}
 
 	/**
-	 * <number> ::= [0-9]{1,9}
+	 * <number> ::= [0-9]{1,10}
 	 */
 	bool number(uint64_t &value)
 	{
@@ -141,7 +141,7 @@ struct ParserPrivate
 		}
 
 		int i;
-		for (i = 0; i < 9 && isdigit(stream->peek()); ++i) {
+		for (i = 0; i < 10 && isdigit(stream->peek()); ++i) {
 			int digit = stream->get() - '0';
 			value = 10 * value + digit;
 		}
