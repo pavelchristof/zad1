@@ -21,7 +21,7 @@ struct BSTPrivate
 	};
 
 	Vector<const Node*> roots;
-	uint32_t nodes = 0;
+	size_t nodes = 0;
 
 	int height(const Node *node)
 	{
@@ -178,7 +178,7 @@ BST::~BST()
 	delete d;
 }
 
-uint32_t BST::set(uint32_t key, uint32_t value)
+size_t BST::set(uint32_t key, uint32_t value)
 {
 	const BSTPrivate::Node *root;
 	if (value == 0) {
@@ -196,19 +196,19 @@ uint32_t BST::set(uint32_t key, uint32_t value)
 	return d->nodes;
 }
 
-uint64_t BST::sum(uint32_t time, uint32_t left, uint32_t right) const
+uint64_t BST::sum(size_t time, uint32_t left, uint32_t right) const
 {
 	return d->sum(d->roots[time], left, right);
 }
 
-uint32_t BST::clear(uint32_t time)
+size_t BST::clear(size_t time)
 {
 	d->remRef(d->roots[time]);
 	d->roots[time] = nullptr;
 	return d->nodes;
 }
 
-uint32_t BST::now() const
+size_t BST::now() const
 {
 	return d->roots.size() - 1;
 }
