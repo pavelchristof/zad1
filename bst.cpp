@@ -178,7 +178,7 @@ BST::~BST()
 	delete d;
 }
 
-size_t BST::set(uint32_t key, uint32_t value)
+size_t BST::assignment(uint32_t key, uint32_t value)
 {
 	const BSTPrivate::Node *root;
 	if (value == 0) {

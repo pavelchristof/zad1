@@ -9,7 +9,7 @@ public:
 	/**
 	 * Called on " f(@a key):=@a value ".
 	 */
-	virtual void set(uint64_t key, uint64_t value) = 0;
+	virtual void assignment(uint64_t key, uint64_t value) = 0;
 
 	/**
 	 * Called on " suma(@a time, @a left .. @a right) ".

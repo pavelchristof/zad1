@@ -19,7 +19,7 @@ public:
 	 * Sets the value of a node.
 	 * @returns the number of currently allocated nodes.
 	 */
-	size_t set(uint32_t key, uint32_t value);
+	size_t assignment(uint32_t key, uint32_t value);
 
 	/**
 	 * @returns Sum of values in the interval [left, right].

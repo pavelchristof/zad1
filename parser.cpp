@@ -51,7 +51,7 @@ struct ParserPrivate
 	}
 
 	/**
-	 * <statement> ::= <set>
+	 * <statement> ::= <assignment>
 	 *               | <sum>
 	 *               | <clear>
 	 */
@@ -59,7 +59,7 @@ struct ParserPrivate
 	{
 		switch (stream->peek()) {
 		case 'f':
-			set();
+			assignment();
 			break;
 
 		case 's':
@@ -77,9 +77,9 @@ struct ParserPrivate
 	}
 
 	/**
-	 * <set> ::= f(<number>):=<number>EOL
+	 * <assignment> ::= f(<number>):=<number>EOL
 	 */
-	void set()
+	void assignment()
 	{
 		uint64_t key, value;
 
@@ -89,7 +89,7 @@ struct ParserPrivate
 		    number(value) &&
 		    expectEOL())
 		{
-			handler->set(key, value);
+			handler->assignment(key, value);
 		}
 	}
 
