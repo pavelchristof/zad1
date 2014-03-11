@@ -1,6 +1,6 @@
 #include "bst.hpp"
+#include "vector.hpp"
 
-#include <vector>
 #include <algorithm>
 
 struct BSTPrivate
@@ -20,11 +20,8 @@ struct BSTPrivate
 		const Node *child[2] = {nullptr, nullptr};
 	};
 
-	//TODO: skopiować własny vector
-	std::vector<const Node *> roots = {nullptr};
-
-	// The number of nodes in this BST.
-	uint32_t counter = 0;
+	Vector<const Node*> roots;
+	uint32_t nodes = 0;
 
 	int height(const Node *node)
 	{
@@ -46,7 +43,7 @@ struct BSTPrivate
 	void remRef(const Node *node)
 	{
 		if (node && --node->refs == 0) {
-			--counter;
+			--nodes;
 			remRef(node->child[0]);
 			remRef(node->child[1]);
 			delete node;
@@ -55,7 +52,7 @@ struct BSTPrivate
 
 	const Node* create(uint32_t key, uint32_t value, const Node *left, const Node *right)
 	{
-		++counter;
+		++nodes;
 		addRef(left);
 		addRef(right);
 		Node *node = new Node(key, value);
@@ -170,12 +167,13 @@ struct BSTPrivate
 
 BST::BST() : d(new BSTPrivate)
 {
+	d->roots.push_back(nullptr);
 }
 
 BST::~BST()
 {
-	for (const BSTPrivate::Node *node : d->roots) {
-		d->remRef(node);
+	for (size_t i = 0; i < d->roots.size(); ++i) {
+		d->remRef(d->roots[i]);
 	}
 	delete d;
 }
@@ -195,7 +193,7 @@ uint32_t BST::set(uint32_t key, uint32_t value)
 	}
 	d->addRef(root);
 	d->roots.push_back(root);
-	return d->counter;
+	return d->nodes;
 }
 
 uint64_t BST::sum(uint32_t time, uint32_t left, uint32_t right) const
@@ -207,7 +205,7 @@ uint32_t BST::clear(uint32_t time)
 {
 	d->remRef(d->roots[time]);
 	d->roots[time] = nullptr;
-	return d->counter;
+	return d->nodes;
 }
 
 uint32_t BST::now() const
