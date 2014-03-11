@@ -84,10 +84,10 @@ struct ParserPrivate
 		uint64_t key, value;
 
 		if (expect("f(")  &&
-			number(key)   &&
-			expect("):=") &&
-			number(value) &&
-			expectEOL())
+		    number(key)   &&
+		    expect("):=") &&
+		    number(value) &&
+		    expectEOL())
 		{
 			handler->set(key, value);
 		}
@@ -101,13 +101,13 @@ struct ParserPrivate
 		uint64_t time, left, right;
 
 		if (expect("suma(") &&
-			number(time)    &&
-			expect(',')     &&
-			number(left)    &&
-			expect("..")    &&
-			number(right)   &&
-			expect(')')     &&
-			expectEOL())
+		    number(time)    &&
+		    expect(',')     &&
+		    number(left)    &&
+		    expect("..")    &&
+		    number(right)   &&
+		    expect(')')     &&
+		    expectEOL())
 		{
 			handler->sum(time, left, right);
 		}
@@ -121,9 +121,9 @@ struct ParserPrivate
 		uint64_t time;
 
 		if (expect("czysc(") &&
-			number(time)     &&
-			expect(')')      &&
-			expectEOL())
+		    number(time)     &&
+		    expect(')')      &&
+		    expectEOL())
 		{
 			handler->clear(time);
 		}
@@ -162,7 +162,7 @@ Parser::~Parser()
 	delete d;
 }
 
-void Parser::parse(std::istream& stream)
+void Parser::parse(std::istream &stream)
 {
 	d->stream = &stream;
 	while (stream) {
