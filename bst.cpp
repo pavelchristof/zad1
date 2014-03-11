@@ -174,6 +174,9 @@ BST::BST() : d(new BSTPrivate)
 
 BST::~BST()
 {
+	for (const BSTPrivate::Node *node : d->roots) {
+		d->remRef(node);
+	}
 	delete d;
 }
 
