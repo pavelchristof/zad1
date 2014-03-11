@@ -2,8 +2,8 @@ CXX=g++
 CXXFLAGS=-Wall -std=c++11 -g
 LDFLAGS=
 
-TARGET = bst
-SRCS   = main.cpp bst.cpp parser.cpp
+TARGET = zad1
+SRCS   = zad1.cpp bst.cpp parser.cpp
 OBJS   = $(SRCS:.cpp=.o)
 DEPS   = $(SRCS:.cpp=.depends)
 
