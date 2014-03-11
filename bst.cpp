@@ -1,66 +1,75 @@
 #include "bst.hpp"
-#include "sharedptr.hpp"
 
 #include <vector>
 #include <algorithm>
 
-struct BSTPrivate 
+struct BSTPrivate
 {
-	struct Node 
+	struct Node
 	{
-		typedef SharedPtr<const Node> Ptr;
-
-		Node(uint32_t k, uint32_t v, uint32_t &c) :
-			key(k), value(v), sum(v), counter(c) 
+		Node(uint32_t k, uint32_t v) :
+			key(k), value(v), sum(v)
 		{
-			++counter;
-		}
-
-		~Node() 
-		{
-			--counter;
 		}
 
 		uint32_t key, value;
 		uint64_t sum;
 
 		int height = 0;
-		Ptr child[2] = {nullptr, nullptr};
-
-		// A node cannot outlive a BST so this reference is always valid.
-		uint32_t &counter;
+		mutable uint32_t refs = 0;
+		const Node *child[2] = {nullptr, nullptr};
 	};
 
 	//TODO: skopiować własny vector
-	std::vector<Node::Ptr> roots = {Node::Ptr()};
+	std::vector<const Node *> roots = {nullptr};
 
-	// The number of nodes of this BST.
+	// The number of nodes in this BST.
 	uint32_t counter = 0;
 
-	int height(Node::Ptr node) 
+	int height(const Node *node)
 	{
 		return node ? node->height : 0;
 	}
 
-	uint64_t sum(Node::Ptr node) 
+	uint64_t sum(const Node *node)
 	{
 		return node ? node->sum : 0;
 	}
 
-	Node::Ptr create(uint32_t key, uint32_t value, Node::Ptr left, Node::Ptr right) 
+	void addRef(const Node *node)
 	{
-		Node *node = new Node(key, value, counter);
+		if (node) {
+			++node->refs;
+		}
+	}
+
+	void remRef(const Node *node)
+	{
+		if (node && --node->refs == 0) {
+			--counter;
+			remRef(node->child[0]);
+			remRef(node->child[1]);
+			delete node;
+		}
+	}
+
+	const Node* create(uint32_t key, uint32_t value, const Node *left, const Node *right)
+	{
+		++counter;
+		addRef(left);
+		addRef(right);
+		Node *node = new Node(key, value);
 		node->child[0] = left;
 		node->child[1] = right;
 		node->height = 1 + std::max(height(left), height(right));
 		node->sum += sum(left) + sum(right);
-		return Node::Ptr(node);
+		return node;
 	}
 
-	Node::Ptr find(Node::Ptr node, uint32_t key) 
+	const Node* find(const Node *node, uint32_t key)
 	{
 		if (!node) {
-			return Node::Ptr();
+			return nullptr;
 		}
 
 		if (key == node->key) {
@@ -72,10 +81,10 @@ struct BSTPrivate
 		}
 	}
 
-	Node::Ptr insert(Node::Ptr node, uint32_t key, uint32_t value) 
+	const Node* insert(const Node *node, uint32_t key, uint32_t value)
 	{
 		if (!node) {
-			return Node::Ptr(new Node(key, value, counter));
+			return create(key, value, nullptr, nullptr);
 		}
 
 		if (key == node->key) {
@@ -90,10 +99,10 @@ struct BSTPrivate
 	/**
 	 * @returns the minimal node and the new tree.
 	 */
-	std::pair<Node::Ptr, Node::Ptr> eraseMin(Node::Ptr node) 
+	std::pair<const Node *, const Node *> eraseMin(const Node *node)
 	{
 		if (!node) {
-			return {Node::Ptr(), Node::Ptr()};
+			return {nullptr, nullptr};
 		}
 
 		if (node->child[0]) {
@@ -104,10 +113,10 @@ struct BSTPrivate
 		}
 	}
 
-	Node::Ptr erase(Node::Ptr node, uint32_t key) 
+	const Node* erase(const Node *node, uint32_t key)
 	{
 		if (!node) {
-			return Node::Ptr();
+			return nullptr;
 		}
 
 		if (key == node->key) {
@@ -124,7 +133,7 @@ struct BSTPrivate
 		}
 	}
 
-	uint64_t sum(Node::Ptr node, uint32_t left, uint32_t right, int side) 
+	uint64_t sum(const Node *node, uint32_t left, uint32_t right, int side)
 	{
 		if (!node) {
 			return 0;
@@ -143,7 +152,7 @@ struct BSTPrivate
 		}
 	}
 
-	uint64_t sum(Node::Ptr node, uint32_t left, uint32_t right) 
+	uint64_t sum(const Node *node, uint32_t left, uint32_t right)
 	{
 		if (!node) {
 			return 0;
@@ -170,17 +179,18 @@ BST::~BST()
 
 uint32_t BST::set(uint32_t key, uint32_t value)
 {
-	BSTPrivate::Node::Ptr root;
+	const BSTPrivate::Node *root;
 	if (value == 0) {
 		root = d->erase(d->roots.back(), key);
 	} else {
-		BSTPrivate::Node::Ptr node = d->find(d->roots.back(), key);
+		const BSTPrivate::Node *node = d->find(d->roots.back(), key);
 		if (node && node->value == value) {
 			root = d->roots.back();
 		} else {
 			root = d->insert(d->roots.back(), key, value);
 		}
 	}
+	d->addRef(root);
 	d->roots.push_back(root);
 	return d->counter;
 }
@@ -192,7 +202,8 @@ uint64_t BST::sum(uint32_t time, uint32_t left, uint32_t right) const
 
 uint32_t BST::clear(uint32_t time)
 {
-	d->roots[time].reset();
+	d->remRef(d->roots[time]);
+	d->roots[time] = nullptr;
 	return d->counter;
 }
 
