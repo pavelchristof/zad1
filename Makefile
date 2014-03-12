@@ -33,7 +33,7 @@ build/%.o: %.cpp | $(DIRS)
 
 # Dependency files.
 deps/%.d: %.cpp | $(DIRS)
-	$(CXX) -MM -MT '$(patsubst %.cpp, build/%.o, $<)' $(CXXFLAGS) $< > $@
+	@$(CXX) -MM -MT '$(patsubst %.cpp, build/%.o, $<)' $(CXXFLAGS) $< > $@
 
 # Unit tests.
 tests: $(OBJS) $(TESTS) | $(DIRS)
