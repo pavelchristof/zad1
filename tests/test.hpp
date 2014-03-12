@@ -25,7 +25,7 @@ public:
 	~Test()
 	{
 		if (testsFailed == 0) {
-			std::cout << Ok() << " All test cases correct.\n";
+			std::cout << Ok() << " All test cases passed.\n";
 		} else {
 			std::cout << Error() << ' ' << testsFailed << '/' << testsTotal << " test cases failed.\n";
 		}
@@ -35,7 +35,7 @@ public:
 	{
 		++testsTotal;
 		if (ok) {
-			std::cout << Ok() << " Test case \"" << name << "\" correct.\n";
+			std::cout << Ok() << " Test case \"" << name << "\" passed.\n";
 		} else {
 			++testsFailed;
 			std::cout << Error() << " Test case \"" << name << "\" failed.\n";
