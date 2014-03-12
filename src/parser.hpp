@@ -6,6 +6,8 @@
 class ParserEventHandler
 {
 public:
+	virtual ~ParserEventHandler() {};
+
 	/**
 	 * Called on " f(@a key):=@a value ".
 	 */
