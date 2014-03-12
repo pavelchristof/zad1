@@ -1,26 +1,51 @@
-CXX=g++
-CXXFLAGS=-Wall -std=c++11 -g
-LDFLAGS=
+CXXFLAGS= -Wall -std=c++11 -g -Isrc
 
-TARGET = zad1
-SRCS   = zad1.cpp bst.cpp parser.cpp
-OBJS   = $(SRCS:.cpp=.o)
-DEPS   = $(SRCS:.cpp=.depends)
+DIRS    = build build/src build/tests deps deps/src deps/tests
 
-.PHONY: clean all
+TARGET  = zad1
+MAIN    = src/$(TARGET).cpp
+MAINOBJ = build/src/$(TARGET).o
 
-all: $(TARGET)
+ALLSRCS = $(wildcard src/*.cpp)
+SRCS    = $(subst $(MAIN), , $(ALLSRCS))
+OBJS    = $(patsubst src/%.cpp, build/src/%.o, $(SRCS))
+DEPS    = $(patsubst src/%.cpp, deps/src/%.d,  $(ALLSRCS))
 
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJS) -o $@
+TSRCS   = $(wildcard tests/*.cpp)
+TESTS   = $(patsubst tests/%.cpp, build/tests/%, $(TSRCS))
+TDEPS   = $(patsubst tests/%.cpp, deps/tests/%.d, $(TSRCS))
 
-.cpp.o:
+.PHONY: clean all tests runtests
+
+all: $(TARGET) tests
+
+# Build directories.
+$(DIRS):
+	@mkdir -p $@
+
+# The main target.
+$(TARGET): $(MAINOBJ) $(OBJS)
+	$(CXX) $(CXXFLAGS) $(MAINOBJ) $(OBJS) -o $@
+
+# Object files.
+build/src/%.o: src/%.cpp | $(DIRS)
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
-%.depends: %.cpp
-	$(CXX) -M $(CXXFLAGS) $< > $@
+# Dependency files.
+deps/%.d: %.cpp | $(DIRS)
+	$(CXX) -MM -MT '$(patsubst %.cpp, build/%.o, $<)' $(CXXFLAGS) $< > $@
 
+# Unit tests.
+tests: $(OBJS) $(TESTS) | $(DIRS)
+
+runtests: tests
+	@$(foreach test, $(TESTS), echo 'Running test $(test)...'; ./$(test))
+
+build/tests/%: tests/%.cpp $(OBJS) | $(DIRS)
+	$(CXX) $(CXXFLAGS) $(OBJS) $< -o $@
+
+# Cleaning.
 clean:
-	rm -f $(OBJS) $(DEPS) $(TARGET)
+	rm -rf $(DIRS) $(TARGET)
 
--include $(DEPS)
+-include $(DEPS) $(TDEPS)
