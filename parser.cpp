@@ -130,14 +130,16 @@ struct ParserPrivate
 	}
 
 	/**
-	 * <number> ::= [0-9]{1,10}
+	 * <number> ::= 0 
+	 *            | [1-9][0-9]{1,9}
 	 */
 	bool number(uint64_t &value)
 	{
 		value = 0;
 		
 		if (stream->peek() == '0') {
-			//TODO: error?
+			stream->get();
+			return true;
 		}
 
 		int i;
