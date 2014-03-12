@@ -1,5 +1,6 @@
 #include <bst.hpp>
 #include "test.hpp"
+#include <random>
 
 Test test("BST");
 
@@ -23,6 +24,43 @@ bool sum()
 	TEST_ASSERT(bst.sum(4, 0, 100) == 187, "Invalid sum.");
 	TEST_ASSERT(bst.sum(4, 0, 24) == 162, "Invalid sum.");
 	TEST_ASSERT(bst.sum(4, 0, 25) == 187, "Invalid sum.");
+
+	return true;
+}
+
+bool sumRand()
+{
+	const int size = 2000;
+
+	std::default_random_engine engine(17531895);
+	std::uniform_int_distribution<uint32_t> keyGen(0, size-1);
+	std::uniform_int_distribution<uint32_t> valueGen(0, 1000);
+
+	uint32_t val[size];
+	for (int i = 0; i < size; ++i) {
+		val[i] = 0;
+	}
+
+	// Fill the tree and val array with random values.
+	BST bst;
+	for (int i = 0; i < 100 * 100; ++i) {
+		uint32_t key = keyGen(engine);
+		uint32_t value = valueGen(engine);
+
+		val[key] = value;
+		bst.assignment(key, value);
+
+		TEST_ASSERT(bst.sum(bst.now(), key, key) == value, "Invalid value just after an assignment.");
+	}
+
+	// Compare sums of every interval with the tree.
+	for (int i = 0; i < size; ++i) {
+		uint64_t sum = 0;
+		for (int j = i; j < size; ++j) {
+			sum += val[j];
+			TEST_ASSERT(bst.sum(bst.now(), i, j) == sum, "Invalid sum.");
+		}
+	}
 
 	return true;
 }
@@ -73,6 +111,7 @@ bool now()
 int main()
 {
 	test.addCase(sum(), "sum");
+	test.addCase(sumRand(), "sumRand");
 	test.addCase(clear(), "clear");
 	test.addCase(now(), "now");
 	return 0;
