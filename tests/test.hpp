@@ -49,7 +49,7 @@ private:
 
 #define TEST_ASSERT(ok, msg) { \
 	if (!(ok)) { \
-		std::cout << Error() << ' ' << __FILE__ << ':' << __LINE__ << ": " << msg << '\n'; \
+		std::cout << Error() << ' ' << __FILE__ << ':' << __LINE__ << ": " << (msg) << '\n'; \
 		return false; \
 	} \
 }
