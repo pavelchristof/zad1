@@ -28,7 +28,7 @@ $(TARGET): $(MAINOBJ) $(OBJS)
 	$(CXX) $(CXXFLAGS) $(MAINOBJ) $(OBJS) -o $@
 
 # Object files.
-build/src/%.o: src/%.cpp | $(DIRS)
+build/%.o: %.cpp | $(DIRS)
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
 # Dependency files.
@@ -39,9 +39,9 @@ deps/%.d: %.cpp | $(DIRS)
 tests: $(OBJS) $(TESTS) | $(DIRS)
 
 runtests: tests
-	@$(foreach test, $(TESTS), echo 'Running test $(test)...'; ./$(test))
+	@$(foreach test, $(TESTS), ./$(test);)
 
-build/tests/%: tests/%.cpp $(OBJS) | $(DIRS)
+build/tests/%: build/tests/%.o $(OBJS) | $(DIRS)
 	$(CXX) $(CXXFLAGS) $(OBJS) $< -o $@
 
 # Cleaning.
