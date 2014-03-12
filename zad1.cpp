@@ -17,14 +17,14 @@ public:
 		parser.parse(std::cin);
 	}
 
-	void set(uint64_t key, uint64_t value) override
+	void assignment(uint64_t key, uint64_t value) override
 	{
 		if (key > maxKey || value > maxValue || !stmtCheck()) {
 			error();
 			return;
 		}
 
-		uint32_t nodes = bst.set(key, value);
+		uint32_t nodes = bst.assignment(key, value);
 		std::cout << "wezlow: " << nodes << '\n';
 	}
 
