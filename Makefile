@@ -15,7 +15,7 @@ TSRCS   = $(wildcard tests/*.cpp)
 TESTS   = $(patsubst tests/%.cpp, build/tests/%, $(TSRCS))
 TDEPS   = $(patsubst tests/%.cpp, deps/tests/%.d, $(TSRCS))
 
-.PHONY: clean all tests runtests
+.PHONY: clean all tests runtests help
 
 all: $(TARGET) tests
 
@@ -47,5 +47,15 @@ build/tests/%: build/tests/%.o $(OBJS) | $(DIRS)
 # Cleaning.
 clean:
 	rm -rf $(DIRS) $(TARGET)
+
+# Help
+help:
+	@echo "Commands:"
+	@echo "    all - build $(TARGET) and tests"
+	@echo "    $(TARGET) - build $(TARGET)"
+	@echo "    tests - build tests"
+	@echo "    runtests - run all tests"
+	@echo "    clean - remove build files and compiled binaries"
+	@echo "    help - display this help"
 
 -include $(DEPS) $(TDEPS)
