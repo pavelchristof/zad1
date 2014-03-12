@@ -1,4 +1,4 @@
-CXXFLAGS= -Wall -std=c++11 -g -Isrc
+CXXFLAGS= -Wall -std=c++11 -O2 -Isrc
 
 DIRS    = build build/src build/tests deps deps/src deps/tests
 
