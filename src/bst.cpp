@@ -15,18 +15,12 @@ struct BSTPrivate
 		uint32_t key, value;
 		uint64_t sum;
 
-		int height = 0;
 		mutable uint32_t refs = 0;
 		const Node *child[2] = {nullptr, nullptr};
 	};
 
 	Vector<const Node*> roots;
 	size_t nodes = 0;
-
-	int height(const Node *node)
-	{
-		return node ? node->height : 0;
-	}
 
 	uint64_t sum(const Node *node)
 	{
@@ -58,7 +52,6 @@ struct BSTPrivate
 		Node *node = new Node(key, value);
 		node->child[0] = left;
 		node->child[1] = right;
-		node->height = 1 + std::max(height(left), height(right));
 		node->sum += sum(left) + sum(right);
 		return node;
 	}

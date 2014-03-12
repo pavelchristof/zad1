@@ -7,7 +7,7 @@
 struct BSTPrivate;
 
 /**
- * Balanced persistent binary search tree.
+ * Persistent binary search tree.
  */
 class BST
 {
