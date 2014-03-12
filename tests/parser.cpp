@@ -3,8 +3,6 @@
 #include <string>
 #include <sstream>
 
-Test test("parser");
-
 class ParserIdentity : public ParserEventHandler
 {
 public:
@@ -134,6 +132,7 @@ bool multiStatement()
 
 int main()
 {
+	Test test("parser");
 	test.addCase(singleStatement(), "single statement");
 	test.addCase(multiStatement(), "multi statement");
 	return 0;

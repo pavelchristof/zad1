@@ -3,8 +3,6 @@
 #include <string>
 #include <sstream>
 
-Test test("driver");
-
 std::string run(std::string s)
 {
 	std::stringstream in(s);
@@ -75,6 +73,7 @@ bool example()
 
 int main()
 {
+	Test test("driver");
 	test.addCase(example(), "example");
 	return 0;
 }

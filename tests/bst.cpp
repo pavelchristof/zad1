@@ -2,8 +2,6 @@
 #include "test.hpp"
 #include <random>
 
-Test test("BST");
-
 bool sum()
 {
 	BST bst;
@@ -110,6 +108,7 @@ bool now()
 
 int main()
 {
+	Test test("BST");
 	test.addCase(sum(), "sum");
 	test.addCase(sumRand(), "sumRand");
 	test.addCase(clear(), "clear");
