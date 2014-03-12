@@ -167,7 +167,7 @@ Parser::~Parser()
 void Parser::parse(std::istream &stream)
 {
 	d->stream = &stream;
-	while (stream) {
+	while (stream && stream.peek() != EOF) {
 		d->statement();
 	}
 	d->stream = nullptr;
