@@ -1,7 +1,7 @@
 #include "bst.hpp"
 #include "vector.hpp"
 
-#include <algorithm>
+#include <utility>
 
 struct BSTPrivate
 {
