@@ -51,11 +51,11 @@ clean:
 # Help
 help:
 	@echo "Commands:"
-	@echo "    all - build $(TARGET) and tests"
-	@echo "    $(TARGET) - build $(TARGET)"
-	@echo "    tests - build tests"
-	@echo "    runtests - run all tests"
-	@echo "    clean - remove build files and compiled binaries"
-	@echo "    help - display this help"
+	@echo "    all - Build $(TARGET) and tests."
+	@echo "    $(TARGET) - Build $(TARGET)."
+	@echo "    tests - Build tests."
+	@echo "    runtests - Run all tests."
+	@echo "    clean - Remove build files and compiled binaries."
+	@echo "    help - Display this help."
 
 -include $(DEPS) $(TDEPS)
