@@ -2,9 +2,9 @@ CXXFLAGS= -Wall -std=c++11 -O2 -Isrc
 
 DIRS    = build build/src build/tests deps deps/src deps/tests
 
-TARGET  = zad1
-MAIN    = src/$(TARGET).cpp
-MAINOBJ = build/src/$(TARGET).o
+TARGET  = zad1.e
+MAIN    = src/zad1.cpp
+MAINOBJ = $(patsubst src/%.cpp, build/src/%.o, $(MAIN))
 
 ALLSRCS = $(wildcard src/*.cpp)
 SRCS    = $(subst $(MAIN), , $(ALLSRCS))
