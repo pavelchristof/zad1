@@ -6,7 +6,7 @@ bool sum()
 {
 	BST bst;
 
-	TEST_ASSERT(bst.sum(0, 0, 1000) == 0, "Sum on an empty BST should return 0.");
+	TEST_ASSERT(bst.sum((size_t)0, 0, 1000) == 0, "Sum on an empty BST should return 0.");
 	TEST_ASSERT(bst.assignment(1, 100) == 1, "Should be 1 allocation.");
 	TEST_ASSERT(bst.sum(1, 1, 1) == 100, "Invalid sum.");
 	TEST_ASSERT(bst.sum(1, 0, 1000) == 100, "Invalid sum.");
