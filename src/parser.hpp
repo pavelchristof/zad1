@@ -29,8 +29,6 @@ public:
 	virtual void error() = 0;
 };
 
-struct ParserPrivate;
-
 class Parser
 {
 public:
@@ -39,15 +37,51 @@ public:
 	 */
 	Parser(ParserEventHandler *handler);
 
-	~Parser();
-
 	/**
 	 * Parses all stream input until EOF.
 	 */
-	void parse(std::istream &stream);
+	void parse(std::istream &in);
 
 private:
-	ParserPrivate *d;
+	void error();
+	bool expect(char c);
+	bool expect(const char *s);
+
+	/**
+	 * Expects EOL or EOF.
+	 */
+	bool expectEOL();
+
+	/**
+	 * <statement> ::= <assignment>
+	 *               | <sum>
+	 *               | <clear>
+	 */
+	void statement();
+
+	/**
+	 * <assignment> ::= f(<number>):=<number>EOL
+	 */
+	void assignment();
+
+	/**
+	 * <sum> ::= suma(<number>,<number>..<number>)EOL
+	 */
+	void sum();
+
+	/**
+	 * <clear> ::= czysc(<number>)EOL
+	 */
+	void clear();
+
+	/**
+	 * <number> ::= 0 
+	 *            | [1-9][0-9]{1,9}
+	 */
+	bool number(uint64_t &value);
+
+	ParserEventHandler *handler;
+	std::istream *stream;
 };
 
 #endif // PARSER_HPP
