@@ -46,16 +46,6 @@ bool Parser::expect(const char *s)
 	return true;
 }
 
-bool Parser::expectEOL()
-{
-	if (stream->peek() == EOF) {
-		stream->get();
-		return true;
-	}
-
-	return expect('\n');
-}
-
 void Parser::statement()
 {
 	switch (stream->peek()) {
@@ -85,7 +75,7 @@ void Parser::assignment()
 		number(key)   &&
 		expect("):=") &&
 		number(value) &&
-		expectEOL())
+		expect('\n'))
 	{
 		handler->assignment(key, value);
 	}
@@ -101,8 +91,7 @@ void Parser::sum()
 		number(left)    &&
 		expect("..")    &&
 		number(right)   &&
-		expect(')')     &&
-		expectEOL())
+		expect(")\n"))
 	{
 		handler->sum(time, left, right);
 	}
@@ -114,8 +103,7 @@ void Parser::clear()
 
 	if (expect("czysc(") &&
 		number(time)     &&
-		expect(')')      &&
-		expectEOL())
+		expect(")\n"))
 	{
 		handler->clear(time);
 	}

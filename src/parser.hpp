@@ -48,11 +48,6 @@ private:
 	bool expect(const char *s);
 
 	/**
-	 * Expects EOL or EOF.
-	 */
-	bool expectEOL();
-
-	/**
 	 * <statement> ::= <assignment>
 	 *               | <sum>
 	 *               | <clear>
