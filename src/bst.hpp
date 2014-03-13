@@ -7,8 +7,6 @@
 #include <cstddef>
 #include <utility>
 
-struct BSTPrivate;
-
 /**
  * Persistent binary search tree.
  */
@@ -34,7 +32,7 @@ public:
 	 * @returns the number of currently allocated nodes.
 	 */
 	size_t clear(size_t time);
-	
+
 	/**
 	 * @returns the current time.
 	 */
@@ -47,10 +45,10 @@ private:
 			key(k), value(v), sum(v)
 		{
 		}
-		
+
 		uint32_t key, value;
 		uint64_t sum;
-		
+
 		mutable uint32_t refs = 0;
 		const Node *child[2] = {nullptr, nullptr};
 	};
