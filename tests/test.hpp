@@ -19,15 +19,15 @@ class Test
 public:
 	Test(const char *name)
 	{
-		std::cout << "Running test \"" << name << "\"...\n";
+		std::cout << "Running test \"" << name << "\"..." << std::endl;
 	}
 
 	~Test()
 	{
 		if (testsFailed == 0) {
-			std::cout << Ok() << " All test cases passed.\n";
+			std::cout << Ok() << " All test cases passed." << std::endl;
 		} else {
-			std::cout << Error() << ' ' << testsFailed << '/' << testsTotal << " test cases failed.\n";
+			std::cout << Error() << ' ' << testsFailed << '/' << testsTotal << " test cases failed." << std::endl;
 		}
 	}
 
@@ -35,10 +35,10 @@ public:
 	{
 		++testsTotal;
 		if (ok) {
-			std::cout << Ok() << " Test case \"" << name << "\" passed.\n";
+			std::cout << Ok() << " Test case \"" << name << "\" passed." << std::endl;
 		} else {
 			++testsFailed;
-			std::cout << Error() << " Test case \"" << name << "\" failed.\n";
+			std::cout << Error() << " Test case \"" << name << "\" failed." << std::endl;
 		}
 	}
 
@@ -49,7 +49,7 @@ private:
 
 #define TEST_ASSERT(ok, msg) { \
 	if (!(ok)) { \
-		std::cout << Error() << ' ' << __FILE__ << ':' << __LINE__ << ": " << (msg) << '\n'; \
+		std::cout << Error() << ' ' << __FILE__ << ':' << __LINE__ << ": " << (msg) << std::endl; \
 		return false; \
 	} \
 }
