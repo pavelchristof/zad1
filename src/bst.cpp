@@ -1,8 +1,6 @@
 #include "bst.hpp"
 #include "vector.hpp"
 
-#include <utility>
-
 BST::BST()
 {
 	roots.push_back(nullptr);
