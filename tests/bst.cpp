@@ -6,7 +6,7 @@ bool sum()
 {
 	BST bst;
 
-	TEST_ASSERT(bst.sum((size_t)0, 0, 1000) == 0, "Sum on an empty BST should return 0.");
+	TEST_ASSERT(bst.sum((int)0, 0, 1000) == 0, "Sum on an empty BST should return 0.");
 	TEST_ASSERT(bst.assignment(1, 100) == 1, "Should be 1 allocation.");
 	TEST_ASSERT(bst.sum(1, 1, 1) == 100, "Invalid sum.");
 	TEST_ASSERT(bst.sum(1, 0, 1000) == 100, "Invalid sum.");
@@ -31,10 +31,10 @@ bool sumRand()
 	const int size = 2000;
 
 	std::default_random_engine engine(17531895);
-	std::uniform_int_distribution<uint32_t> keyGen(0, size-1);
-	std::uniform_int_distribution<uint32_t> valueGen(0, 1000);
+	std::uniform_int_distribution<int> keyGen(0, size-1);
+	std::uniform_int_distribution<int> valueGen(0, 1000);
 
-	uint32_t val[size];
+	int val[size];
 	for (int i = 0; i < size; ++i) {
 		val[i] = 0;
 	}
@@ -42,8 +42,8 @@ bool sumRand()
 	// Fill the tree and val array with random values.
 	BST bst;
 	for (int i = 0; i < 100 * 100; ++i) {
-		uint32_t key = keyGen(engine);
-		uint32_t value = valueGen(engine);
+		int key = keyGen(engine);
+		int value = valueGen(engine);
 
 		val[key] = value;
 		bst.assignment(key, value);
@@ -53,7 +53,7 @@ bool sumRand()
 
 	// Compare sums of every interval with the tree.
 	for (int i = 0; i < size; ++i) {
-		uint64_t sum = 0;
+		int sum = 0;
 		for (int j = i; j < size; ++j) {
 			sum += val[j];
 			TEST_ASSERT(bst.sum(bst.now(), i, j) == sum, "Invalid sum.");
