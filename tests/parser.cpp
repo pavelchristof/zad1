@@ -101,6 +101,15 @@ bool singleStatement()
 	return true;
 }
 
+bool longInt()
+{
+	TEST_ASSERT(isEqual("f(9999999999):=9999999999\n"), "Int bigger then 2^32 not parsed correctly.");
+	TEST_ASSERT(isEqual("suma(9999999999,9999999999..9999999999)\n"), "Int bigger then 2^32 not parsed correctly.");
+	TEST_ASSERT(isEqual("czysc(9999999999)\n"), "Int bigger then 2^32 not parsed correctly.");
+
+	return true;
+}
+
 bool multiStatement()
 {
 	std::string input =
@@ -134,6 +143,7 @@ int main()
 {
 	Test test("parser");
 	test.addCase(singleStatement(), "single statement");
+	test.addCase(longInt(), "long int");
 	test.addCase(multiStatement(), "multi statement");
 	return 0;
 }
