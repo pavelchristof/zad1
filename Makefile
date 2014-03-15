@@ -1,19 +1,19 @@
 CXXFLAGS= -Wall -std=c++11 -O2 -Isrc
 
-DIRS    = build build/src build/tests deps deps/src deps/tests
+DIRS    = build build/src build/tests
 
 TARGET  = zad1.e
 MAIN    = src/zad1.cpp
-MAINOBJ = $(patsubst src/%.cpp, build/src/%.o, $(MAIN))
+MAINOBJ = $(patsubst %.cpp, build/%.o, $(MAIN))
 
 ALLSRCS = $(wildcard src/*.cpp)
 SRCS    = $(subst $(MAIN), , $(ALLSRCS))
-OBJS    = $(patsubst src/%.cpp, build/src/%.o, $(SRCS))
-DEPS    = $(patsubst src/%.cpp, deps/src/%.d,  $(ALLSRCS))
+OBJS    = $(patsubst %.cpp, build/%.o, $(SRCS))
+DEPS    = $(patsubst %.cpp, build/%.d,  $(ALLSRCS))
 
 TSRCS   = $(wildcard tests/*.cpp)
-TESTS   = $(patsubst tests/%.cpp, build/tests/%, $(TSRCS))
-TDEPS   = $(patsubst tests/%.cpp, deps/tests/%.d, $(TSRCS))
+TESTS   = $(patsubst %.cpp, build/%, $(TSRCS))
+TDEPS   = $(patsubst %.cpp, build/%.d, $(TSRCS))
 
 .PHONY: clean all tests runtests help
 
@@ -32,7 +32,7 @@ build/%.o: %.cpp | $(DIRS)
 	$(CXX) -c $(CXXFLAGS) $< -o $@
 
 # Dependency files.
-deps/%.d: %.cpp | $(DIRS)
+build/%.d: %.cpp | $(DIRS)
 	@$(CXX) -MM -MT '$(patsubst %.cpp, build/%.o, $<)' $(CXXFLAGS) $< > $@
 
 # Unit tests.
@@ -41,7 +41,7 @@ tests: $(OBJS) $(TESTS) | $(DIRS)
 runtests: tests
 	@$(foreach test, $(TESTS), ./$(test);)
 
-build/tests/%: build/tests/%.o $(OBJS) | $(DIRS)
+$(TESTS): % : %.o $(OBJS) | $(DIRS)
 	$(CXX) $(CXXFLAGS) $(OBJS) $< -o $@
 
 # Cleaning.
