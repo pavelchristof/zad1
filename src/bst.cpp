@@ -13,7 +13,7 @@ BST::~BST()
 	}
 }
 
-int BST::assignment(int key, int value)
+size_t BST::assignment(uint32_t key, uint32_t value)
 {
 	const Node *root;
 	if (value == 0) {
@@ -31,19 +31,19 @@ int BST::assignment(int key, int value)
 	return nodes;
 }
 
-int BST::sum(int time, int left, int right) const
+uint64_t BST::sum(size_t time, uint32_t left, uint32_t right) const
 {
 	return sum(roots[time], left, right);
 }
 
-int BST::clear(int time)
+size_t BST::clear(size_t time)
 {
 	remRef(roots[time]);
 	roots[time] = nullptr;
 	return nodes;
 }
 
-int BST::now() const
+size_t BST::now() const
 {
 	return roots.size() - 1;
 }
@@ -65,7 +65,7 @@ void BST::remRef(const BST::Node* node)
 	}
 }
 
-const BST::Node* BST::create(int key, int value, const BST::Node* left, const BST::Node* right)
+const BST::Node* BST::create(uint32_t key, uint32_t value, const BST::Node* left, const BST::Node* right)
 {
 	++nodes;
 	addRef(left);
@@ -77,7 +77,7 @@ const BST::Node* BST::create(int key, int value, const BST::Node* left, const BS
 	return node;
 }
 
-const BST::Node* BST::find(const BST::Node* node, int key) const
+const BST::Node* BST::find(const BST::Node* node, uint32_t key) const
 {
 	if (!node) {
 		return nullptr;
@@ -92,7 +92,7 @@ const BST::Node* BST::find(const BST::Node* node, int key) const
 	}
 }
 
-const BST::Node* BST::insert(const BST::Node* node, int key, int value)
+const BST::Node* BST::insert(const BST::Node* node, uint32_t key, uint32_t value)
 {
 	if (!node) {
 		return create(key, value, nullptr, nullptr);
@@ -124,7 +124,7 @@ std::pair<const BST::Node *, const BST::Node *> BST::eraseMin(const BST::Node* n
 	}
 }
 
-const BST::Node* BST::erase(const BST::Node* node, int key)
+const BST::Node* BST::erase(const BST::Node* node, uint32_t key)
 {
 	if (!node) {
 		return nullptr;
@@ -144,12 +144,12 @@ const BST::Node* BST::erase(const BST::Node* node, int key)
 	}
 }
 
-int BST::sum(const BST::Node* node) const
+uint64_t BST::sum(const BST::Node* node) const
 {
 	return node ? node->sum : 0;
 }
 
-int BST::sum(const Node *node, int left, int right, int side) const
+uint64_t BST::sum(const Node *node, uint32_t left, uint32_t right, int side) const
 {
 	if (!node) {
 		return 0;
@@ -168,7 +168,7 @@ int BST::sum(const Node *node, int left, int right, int side) const
 	}
 }
 
-int BST::sum(const Node *node, int left, int right) const
+uint64_t BST::sum(const Node *node, uint32_t left, uint32_t right) const
 {
 	if (!node) {
 		return 0;

@@ -20,34 +20,34 @@ public:
 	 * Sets the value of a node.
 	 * @returns the number of currently allocated nodes.
 	 */
-	int assignment(int key, int value);
+	size_t assignment(uint32_t key, uint32_t value);
 
 	/**
 	 * @returns Sum of values in the interval [left, right].
 	 */
-	int sum(int time, int left, int right) const;
+	uint64_t sum(size_t time, uint32_t left, uint32_t right) const;
 
 	/**
 	 * Clears the tree at @a time from the history.
 	 * @returns the number of currently allocated nodes.
 	 */
-	int clear(int time);
+	size_t clear(size_t time);
 
 	/**
 	 * @returns the current time.
 	 */
-	int now() const;
+	size_t now() const;
 
 private:
 	struct Node
 	{
-		Node(int k, int v) :
+		Node(uint32_t k, uint32_t v) :
 			key(k), value(v), sum(v)
 		{
 		}
 
-		int key, value;
-		int sum;
+		uint32_t key, value;
+		uint64_t sum;
 
 		mutable uint32_t refs = 0;
 		const Node *child[2] = {nullptr, nullptr};
@@ -55,17 +55,17 @@ private:
 
 	void addRef(const Node *node);
 	void remRef(const Node *node);
-	const Node* create(int key, int value, const Node *left, const Node *right);
-	const Node* find(const Node *node, int key) const;
-	const Node* insert(const Node *node, int key, int value);
+	const Node* create(uint32_t key, uint32_t value, const Node *left, const Node *right);
+	const Node* find(const Node *node, uint32_t key) const;
+	const Node* insert(const Node *node, uint32_t key, uint32_t value);
 	std::pair<const Node *, const Node *> eraseMin(const Node *node);
-	const Node* erase(const Node *node, int key);
-	int sum(const Node *node) const;
-	int sum(const Node *node, int left, int right, int side) const;
-	int sum(const Node *node, int left, int right) const;
+	const Node* erase(const Node *node, uint32_t key);
+	uint64_t sum(const Node *node) const;
+	uint64_t sum(const Node *node, uint32_t left, uint32_t right, int side) const;
+	uint64_t sum(const Node *node, uint32_t left, uint32_t right) const;
 
 	Vector<const Node*> roots;
-	int nodes = 0;
+	size_t nodes = 0;
 };
 
 #endif // BST_HPP
