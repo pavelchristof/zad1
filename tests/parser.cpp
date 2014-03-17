@@ -97,6 +97,8 @@ bool singleStatement()
 	TEST_ASSERT(isError("czysc(f(1))\n"), "Invalid parse.");
 	TEST_ASSERT(isError("\n"), "Invalid parse.");
 	TEST_ASSERT(isError(" \n"), "Invalid parse.");
+	TEST_ASSERT(isError("f(1):=1\0\n"), "Invalid parse.");
+	TEST_ASSERT(isError("f(1):=1\0"), "Invalid parse.");
 
 	return true;
 }
