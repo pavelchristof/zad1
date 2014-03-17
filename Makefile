@@ -1,4 +1,4 @@
-CXXFLAGS= -Wall -std=c++11 -O2 -Isrc
+CXXFLAGS= -Wall -Wextra -std=c++11 -O2 -Isrc
 
 DIRS    = build build/src build/tests
 
