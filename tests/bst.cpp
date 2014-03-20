@@ -106,6 +106,62 @@ bool now()
 	return true;
 }
 
+bool removeNotExisting()
+{
+	BST bst;
+
+	TEST_ASSERT(bst.assignment(0, 1) == 1, "Should be 1 node.");
+	TEST_ASSERT(bst.assignment(1, 0) == 1, "Still should be 1 node.");
+
+	return true;
+}
+
+bool setEqualValue()
+{
+	BST bst;
+
+	TEST_ASSERT(bst.assignment(0, 1) == 1, "Should be 1 node.");
+	TEST_ASSERT(bst.assignment(0, 1) == 1, "Still should be 1 node.");
+
+	return true;
+}
+
+bool remove1()
+{
+	BST bst;
+
+	TEST_ASSERT(bst.assignment(0, 1) == 1, "Should be 1 node.");
+	TEST_ASSERT(bst.assignment(1, 1) == 3, "Should be 3 nodes.");
+	TEST_ASSERT(bst.assignment(2, 1) == 6, "Should be 6 nodes.");
+	TEST_ASSERT(bst.assignment(0, 0) == 7, "Should be 7 nodes.");
+
+	return true;
+}
+
+bool remove2()
+{
+	BST bst;
+
+	TEST_ASSERT(bst.assignment(0, 1) == 1, "Should be 1 node.");
+	TEST_ASSERT(bst.assignment(1, 1) == 3, "Should be 3 nodes.");
+	TEST_ASSERT(bst.assignment(2, 1) == 6, "Should be 6 nodes.");
+	TEST_ASSERT(bst.assignment(1, 0) == 8, "Should be 8 nodes.");
+
+	return true;
+}
+
+bool remove3()
+{
+	BST bst;
+
+	TEST_ASSERT(bst.assignment(0, 1) == 1, "Should be 1 node.");
+	TEST_ASSERT(bst.assignment(1, 1) == 3, "Should be 3 nodes.");
+	TEST_ASSERT(bst.assignment(2, 1) == 6, "Should be 6 nodes.");
+	TEST_ASSERT(bst.assignment(2, 0) == 8, "Should be 8 nodes.");
+
+	return true;
+}
+
 int main()
 {
 	Test test("BST");
@@ -113,5 +169,10 @@ int main()
 	test.addCase(sumRand(), "sumRand");
 	test.addCase(clear(), "clear");
 	test.addCase(now(), "now");
+	test.addCase(removeNotExisting(), "removeNotExisting");
+	test.addCase(setEqualValue(), "setEqualValue");
+	test.addCase(remove1(), "remove1");
+	test.addCase(remove2(), "remove2");
+	test.addCase(remove3(), "remove3");
 	return 0;
 }
