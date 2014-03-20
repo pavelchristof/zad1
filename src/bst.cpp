@@ -15,17 +15,18 @@ BST::~BST()
 
 size_t BST::assignment(uint32_t key, uint32_t value)
 {
+	const Node *oldNode = find(roots.back(), key);
+	uint64_t oldValue = oldNode ? oldNode->value : 0;
+
 	const Node *root;
-	if (value == 0) {
+	if (oldValue == value) {
+		root = roots.back();
+	} else if (value == 0) {
 		root = erase(roots.back(), key);
 	} else {
-		const Node *node = find(roots.back(), key);
-		if (node && node->value == value) {
-			root = roots.back();
-		} else {
-			root = insert(roots.back(), key, value);
-		}
+		root = insert(roots.back(), key, value);
 	}
+
 	addRef(root);
 	roots.push_back(root);
 	return nodes;
